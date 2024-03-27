@@ -5,7 +5,7 @@
       <h1>Les Questionnaires</h1>
       <div class="card" v-for="questionnaire in questionnaires.questionnaires" :key="questionnaire.id">
         <QuestionnaireItem :questionnaire="questionnaire" @remove="removeQuestionnaire" @modify="editQuestionnaire"
-          @consult="consultQuestionnaire" />
+          @consult="consultQuestions" @remove-q="removeQuestion" />
       </div>
     </div>
   </div>
@@ -50,12 +50,21 @@ export default {
         this.questionnaires.questionnaires[index].name = newName;
       }
     },
-    consultQuestionnaire(payload) {
+    consultQuestions(payload) {
       let index = this.questionnaires.questionnaires.findIndex(questionnaire => questionnaire.id === payload.id);
-      if (index !== -1) {
-        alert(this.questionnaires.questionnaires[index].name);
-        alert(this.questionnaires.questionnaires[index].questions);
+      let name = this.questionnaires.questionnaires[index].name;
+      let div = document.getElementsByClassName(name)[0];
+      let bouton = document.getElementById("consult-" + payload.id);
+      if (div.style.display === "none") {
+        div.style.display = "block";
+        bouton.value = "Fermer";
+      } else {
+        div.style.display = "none";
+        bouton.value = "Consulter";
       }
+    },
+    removeQuestion(payload) {
+      console.log(payload.id);
     }
   }
 }
