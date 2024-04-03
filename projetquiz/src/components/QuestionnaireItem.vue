@@ -10,6 +10,8 @@
                     <input type="radio" :name="`question-${question.id}`" :value="question.question.choix2">
                     <label>{{ question.question.choix2 }}</label>
                     <input type="button" class="btn btn-danger" value="Supprimer" @click="supprQ(question.id)">
+                    <input type="button" class="btn btn-warning" value="Modifier" @click="modifQ(question.id)">
+
                 </div>
                 <div v-else-if="question.question_type === 'multiple'" class="d-flex justify-content-around">
                     <div v-for="(choice, index) in question.question" :key="index">
@@ -17,24 +19,26 @@
                         <input type="checkbox" :name="`question-${question.id}`" :value="choice">
                     </div>
                     <input type="button" class="btn btn-danger" value="Supprimer" @click="supprQ(question.id)">
+                    <input type="button" class="btn btn-warning" value="Modifier" @click="modifQ(question.id)">
                 </div>
             </div>
-            <input type="button" class="btn btn-primary" value="Ajouter Question" @click="addQ"
-                :id="`addQ-${questionnaire.id}`">
-            <div :id="`ajouterQuestion-${questionnaire.id}`" style="display: none;">
-                <form action="">
-                    <input type="radio" name="typeQ" :id="``" checked>
-                    <label for="simple">Simple</label>
-                    <input type="radio" name="typeQ" id="multiple">
-                    <label for="multiple">Multiple</label>
+            <input type="button" class="btn btn-primary" value="Ajouter une question"
+                :id="`button-addQ-${questionnaire.id}`" @click="afficheForm">
+            <div style="display: none;" :id="`divForm-${questionnaire.id}`">
+                <form action="" :id="`form-${questionnaire.id}`">
+                    <input type="radio" name="typeQ" :id="`simple-${questionnaire.id}`" value="simple">
+                    <label for="simple">Question simple</label>
+                    <input type="radio" name="typeQ" :id="`multiple-${questionnaire.id}`" value="multiple" checked>
+                    <label for="multiple">Question à choix multiples</label>
                 </form>
-                <div class="d-flex flex-wrap justify-content-center"
-                    style="width: 10%; margin-left: auto; margin-right: auto;">
-                    <input type="text" id="questionTitle" placeholder="Question">
-                    <input type="text" id="choix1" placeholder="Choix 1">
-                    <input type="text" id="choix2" placeholder="Choix 2">
-                    <input type="text" id="choix3" placeholder="Choix 3">
-                    <input type="text" id="choix4" placeholder="Choix 4">
+                <div :id="`choix-${questionnaire.id}`" class="d-flex flex-wrap justify-content-center"
+                    style="width: 10vw; margin-left: auto; margin-right: auto;">
+                    <input type="text" placeholder="Titre" :id="`question-${questionnaire.id}`">
+                    <input type="text" placeholder="Choix 1" :id="`choix1-${questionnaire.id}`">
+                    <input type="text" placeholder="Choix 2" :id="`choix2-${questionnaire.id}`">
+                    <input type="text" placeholder="Choix 3" :id="`choix3-${questionnaire.id}`">
+                    <input type="text" placeholder="Choix 4" :id="`choix4-${questionnaire.id}`">
+                    <input type="button" class="btn btn-primary" value="Ajouter" @click="addQ">
                 </div>
             </div>
         </div>
@@ -70,10 +74,27 @@ export default {
         supprQ(questionId) {
             this.$emit('removeQ', { id: this.questionnaire.id, questionId: questionId });
         },
+        afficheForm() {
+            this.$emit('afficheForm', { id: this.questionnaire.id });
+        },
         addQ() {
-            this.$emit('addQ', { id: this.questionnaire.id });
+            let form = document.getElementById(`form-${this.questionnaire.id}`);
+            let type = form.querySelector('input[type="radio"]:checked').value;
+            let title = document.getElementById(`question-${this.questionnaire.id}`).value;
+            let choix1 = document.getElementById(`choix1-${this.questionnaire.id}`).value;
+            let choix2 = document.getElementById(`choix2-${this.questionnaire.id}`).value;
+            let choix3 = document.getElementById(`choix3-${this.questionnaire.id}`).value;
+            let choix4 = document.getElementById(`choix4-${this.questionnaire.id}`).value;
+            let choices = [choix1, choix2];
+            if (type === 'multiple') {
+                choices.push(choix3, choix4);
+            }
+            this.$emit('addQ', { id: this.questionnaire.id, type, title, choices });
+        },
+        modifQ(questionId) {
+            this.$emit('modifyQ', { id: this.questionnaire.id, questionId: questionId });
         }
     },
-    emits: ['remove', 'modify', 'consult', 'removeQ', "addQ"]
+    emits: ['remove', 'modify', 'consult', 'removeQ', 'afficheForm', 'addQ', 'modifyQ']
 }
 </script>

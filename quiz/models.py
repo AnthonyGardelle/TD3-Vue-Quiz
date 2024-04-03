@@ -72,10 +72,13 @@ class Questionnaire(db.Model):
                                         question_type=request.json.get(
                                             "question_type"),
                                         questionnaire_id=self.id,
-                                        choix1=request.json.get("choix1"),
-                                        choix2=request.json.get("choix2"),
-                                        choix3=request.json.get("choix3"),
-                                        choix4=request.json.get("choix4"))
+                                        choix1=request.json.get(
+                                            "question")["choix1"],
+                                        choix2=request.json.get(
+                                            "question")["choix2"],
+                                        choix3=request.json.get(
+                                            "question")["choix3"],
+                                        choix4=request.json.get("question")["choix4"])
         else:
             question = Question(title=request.json.get("title"),
                                 question_type=request.json.get(

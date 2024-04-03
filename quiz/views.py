@@ -157,11 +157,7 @@ def update_question(question_id):
         abort(400)
     if "title" in request.json and isinstance(request.json["title"], str) is False:
         abort(400)
-    if "question_type" in request.json and isinstance(request.json["question_type"], str) is False:
-        abort(400)
     question.title = request.json.get("title", question.title)
-    question.question_type = request.json.get(
-        "question_type", question.question_type)
     db.session.commit()
     return jsonify(question.to_json())
 
