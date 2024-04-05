@@ -17,9 +17,9 @@ Nous devons construire une application Vue sur le même modèle pour notre quest
     Le serveur et le client sont à lancer dans 2 terminaux différents à la racine du rendu.
 1) Sur Windows  
     Pour lancer le serveur REST  
-        ```$ source ./lancementServeur.ps1```  
+        ```$ ./lancementServeur.ps1```  
     Pour lancer le client node  
-        ```$ source ./lancementClient.ps1```  
+        ```$ ./lancementClient.ps1```  
     Le serveur et le client sont à lancer dans 2 terminaux différents à la racine du rendu.
 
 Pour revenir à l'état initial, il suffit pour le terminal serveur de faire :  
