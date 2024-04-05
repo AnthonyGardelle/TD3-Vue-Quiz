@@ -10,10 +10,12 @@ from .models import (Questionnaire,
 @app.cli.command()
 def loaddb():
     """Fonction de chargement de la base de données"""
+    print("Chargement de la base de données...")
     if os.path.exists("../quiz.db"):
         os.remove("../quiz.db")
     db.create_all()
     insert_data()
+    print("Base de données chargée avec succès !")
 
 
 def insert_questionnaires():
